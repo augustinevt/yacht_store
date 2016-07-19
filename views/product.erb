@@ -1,3 +1,5 @@
-<h1><%= @product.name() %></h1>
-<h3><%= @product.price() %></h3>
-<h3><%= @product.sold() %></h3>
+<h1>Ship: <%= @product.name() %></h1>
+<h3>Price: $<%= @product.price() %></h3>
+<h3>Sold: <%= @product.sold() %></h3>
+
+<a href="/purchase/<%= @purchase.id() %>/products"><button type="button" name="button">Back</button></a>

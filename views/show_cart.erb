@@ -1,1 +1,19 @@
 <h1>Your Order</h1>
+
+<% @products.each() do |product| %>
+  <div class="">
+    <%= product.name() %><br>
+      <form class="" action="/purchase/<%=@purchase.id()%>/products/<%= product.id%>" method="post">
+        <input type="hidden" name="_method" value="patch">
+        <button type="submit" name="<%= product.id() %>" id="<%= product.id() %>">Remove From Cart</button>
+      </form>
+  </div>
+<% end %>
+
+<h3>Order Total: $<%= @total_cost %></h3>
+<form class="" action="/purchase/<%= @purchase.id() %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <button type="submit" name="button">Confirm purchase</button>
+</form>
+
+<a href="/purchase/<%=@purchase.id%>/products"><button type="button" name="button">Back</button></a>

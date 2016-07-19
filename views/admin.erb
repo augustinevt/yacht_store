@@ -1,28 +1,47 @@
-<h1>Add a Product to Your Store</h1>
+<div class="row">
+  <h1 class="center">Add a Product to Your Store</h1>
 
-<form class="" action="/products" method="post">
-  <label for="name">Product Name:</label>
-  <input type="text" name="name" id="name">
+  <form class="col s12" action="/products" method="post">
+    <div class="row">
+      <div class="input-field col s6">
+        <label for="name">Product Name:</label>
+        <input type="text" name="name" id="name">
+      </div>
+      <div class="input-field col s6">
+        <label for="price">Product Price:</label>
+        <input type="text" name="price" id="price">
+      </div>
+    </div>
+    <button type="submit" name="button" class="btn waves-effect waves-light deep-purple accent-2">Add Product</button>
+  </form>
+</div>
 
-  <label for="price">Product Price:</label>
-  <input type="text" name="price" id="price">
+<div class="row">
+  <% if @products.any?() %>
+    <% @products.each() do |product| %>
+      <div class="col s4">
+        <div class="card blue lighten-4 hoverable">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="img/shaddai-superyacht.jpeg" alt="A big yacht" />
+            <span class="card-title activator">So wow. Much ostentiatious.</span>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4"><a href="#"><%= product.name() %></a><i class="material-icons right">close</i></span>
+            <p>$<%= product.price() %>0</p>
+            <p>Sold: <%= product.sold() %></p>
+          </div>
+          <div class="card-action valign-wrapper">
+            <a href="/products/<%= product.id() %>" class="btn waves-effect waves-light deep-purple darken-4 valign">Edit</a>
+            <form action="/products/<%= product.id() %>" method="post" class="right-align valign">
+              <input name="_method" type="hidden" value="delete">
+              <button type="submit" name="button" class="btn waves-effect waves-light orange darken-4 valign">DELETE</button>
+            </form>
+          </div>
+        </div>
+      </div>
 
-  <button type="submit" name="button">Add Product</button>
-</form>
-
-<% if @products.any?() %>
-  <% @products.each() do |product| %>
-    <ul>
-      <li><a href="#"><%= product.name() %></a></li>
-      <li><a href="#"><%= product.price() %></a></li>
-      <li><a href="#"><%= product.sold() %></a></li>
-    </ul>
-    <a href="/products/<%= product.id() %>"><button type="button">Edit</button></a>
-    <form action="/products/<%= product.id() %>" method="post">
-      <input name="_method" type="hidden" value="delete">
-      <button type="submit" name="button">DELETE</button>
-    </form>
+    <% end %>
+  <% else %>
+    <h2>You don't have any products in your store.  Add them to make that scrilla!</h2>
   <% end %>
-<% else %>
-  <h2>You don't have any products in your store.  Add them to make that scrilla!</h2>
-<% end %>
+</div>

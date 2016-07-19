@@ -1,15 +1,26 @@
-<h1><%= @product.name() %></h1>
-<h3><%= @product.price() %></h3>
-<h3><%= @product.sold() %></h3>
 
 
-<form class="" action="/products/<%= @product.id() %>" method="post">
-  <input type="hidden" name="_method" value="patch">
-  <label for="name">Product Name:</label>
-  <input type="text" name="name" id="name">
-
-  <label for="price">Product Price:</label>
-  <input type="text" name="price" id="price">
-
-  <button type="submit" name="button">Edit Product</button>
-</form>
+<div class="row">
+  <div class="center">
+    <h1>Ship: <%= @product.name() %></h1>
+    <h3>Price: $<%= @product.price() %></h3>
+    <h3>Sold: <%= @product.sold() %></h3>
+  </div>
+  <div class="container">
+    <h1 class="center">Edit Product</h1>
+    <form class="" action="/products/<%= @product.id() %>" method="post">
+      <input type="hidden" name="_method" value="patch">
+      <div class="row">
+        <div class="input-field col s6">
+          <label for="name">Product Name:</label>
+          <input type="text" name="name" id="name" value="<%= @product.name() %>">
+        </div>
+        <div class="input-field col s6">
+          <label for="price">Product Price:</label>
+          <input type="text" name="price" id="price" value="<%= @product.price() %>">
+        </div>
+      </div>
+      <button type="submit" name="button" class="btn waves-effect waves-light deep-purple accent-2">Edit Product</button>
+    </form>
+  </div>
+</div>

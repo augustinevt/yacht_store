@@ -12,7 +12,7 @@ get('/') do
 end
 
 get('/admin') do
-  @products = Product.all()
+  @products = Product.all().order(name: :asc)
   erb(:admin)
 end
 
@@ -29,9 +29,10 @@ post("/products") do
 end
 
 patch("/products/:id") do
-  name = params.fetch("name")
+  @product = Product.find(params[:id])
+  name = params.fetch("name", @product.name())
   price = params.fetch("price").to_f
-  @product = Product.update(name: name, price: price, sold: false)
+  @product.update(name: name, price: price, sold: false)
   redirect "/admin"
 end
 
@@ -47,6 +48,15 @@ post('/purchase') do
   redirect "/purchase/#{@purchase.id()}/products"
 end
 
+get('/purchase') do
+  if params
+    Purchase.made_between(params[:start_date],params[:end_date])
+  else
+    @purchase = Purchase.create()
+  end
+  redirect "/purchase/#{@purchase.id()}/products"
+end
+
 get('/purchase/:id/products') do
   @products = Product.all()
   @purchase = Purchase.find(params[:id])
@@ -54,8 +64,9 @@ get('/purchase/:id/products') do
 end
 
 get('/purchase/:id') do
-  @products = Product.all()
   @purchase = Purchase.find(params[:id])
+  @products = @purchase.products()
+  @total_cost = @purchase.calculate_total()
   erb(:show_cart)
 end
 
@@ -69,6 +80,19 @@ end
 patch('/purchase/:purchase_id/products/:id') do
   @purchase = Purchase.find(params[:purchase_id])
   @product = Product.find(params[:id])
-  @product.update(purchase_id: @purchase.id())
-  redirect "/purchase/#{@purchase.id()}/products"
+  if @product.purchase_id() == @purchase.id()
+    @product.update(purchase_id: nil)
+    redirect "/purchase/#{@purchase.id()}"
+  else
+    @product.update(purchase_id: @purchase.id())
+    redirect "/purchase/#{@purchase.id()}/products"
+  end
+end
+
+patch('/purchase/:purchase_id') do
+  @purchase = Purchase.find(params[:purchase_id])
+  @products = Purchase.all()
+  total_cost = @purchase.calculate_total()
+  @purchase.update(total: total_cost)
+  erb(:order_confirmation)
 end
