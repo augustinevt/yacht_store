@@ -1,0 +1,16 @@
+<h1>Super Yacht Surplus</h1>
+
+  <ul>
+    <% @products.each do |product| %>
+        <li><a href="/purchase/<%= @purchase.id() %>/products/<%= product.id() %>"><%= product.name() %></a></li>
+
+        <% if product.purchase_id != @purchase.id() %>
+          <form class="" action="/purchase/<%=@purchase.id()%>/products/<%= product.id%>" method="post">
+            <input type="hidden" name="_method" value="patch">
+            <button type="submit" name="<%= product.id() %>" id="<%= product.id() %>">Add to Cart</button>
+          </form>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <a href="/purchase/<%=@purchase.id%>"><button type="button" name="button">Checkout</button></a>

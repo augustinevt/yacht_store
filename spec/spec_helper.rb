@@ -2,9 +2,14 @@ ENV['RACK_ENV'] = 'test'
 
 require("sinatra/activerecord")
 require('rspec')
+require('capybara/rspec')
 require('pg')
 require('product')
 require('purchase')
+require('./app.rb')
+
+Capybara.app = Sinatra::Application
+set(:show_exceptions, false)
 
 RSpec.configure do |config|
   config.before(:each) do
